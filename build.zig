@@ -5,7 +5,7 @@ pub fn build(b: *std.Build) !void {
     const optimize = b.standardOptimizeOption(.{});
     const target = b.standardTargetOptions(.{});
 
-    const glfw_dep = b.dependency("glfw", .{
+    const glfw_dep = b.dependency("zig_glfw", .{
         .target = target,
         .optimize = optimize,
     });
@@ -15,7 +15,7 @@ pub fn build(b: *std.Build) !void {
         .optimize = optimize,
         .root_source_file = b.path("src/main.zig"),
     });
-    module.linkLibrary(glfw_dep.artifact("glfw"));
+    module.linkLibrary(glfw_dep.artifact("zig-glfw"));
 
     const test_step = b.step("test", "Run library tests");
     const main_tests = b.addTest(.{
@@ -24,7 +24,7 @@ pub fn build(b: *std.Build) !void {
         .target = target,
         .optimize = optimize,
     });
-    main_tests.linkLibrary(glfw_dep.artifact("glfw"));
+    main_tests.linkLibrary(glfw_dep.artifact("zig-glfw"));
     b.installArtifact(main_tests);
     test_step.dependOn(&b.addRunArtifact(main_tests).step);
 
